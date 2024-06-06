@@ -1,5 +1,8 @@
 import { createUserSchema } from "../schemas/userSchemas.js";
 import { loginUserSchema } from "../schemas/userSchemas.js";
+import { editUserSchema } from "../schemas/userSchemas.js";
+
+editUserSchema;
 import bcrypt from "bcrypt";
 import User from "../models/usersSchema.js";
 import gravatar from "gravatar";
@@ -72,7 +75,7 @@ export const userLogin = async (req, res, next) => {
       { expiresIn: "3d" }
     );
 
-    await User.findByIdAndUpdate(user._id, { token });
+    await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
     return res.status(200).json({
       token: token,
@@ -87,18 +90,45 @@ export const userLogin = async (req, res, next) => {
 };
 export const userLogout = async (req, res, next) => {
   try {
+    await User.findByIdAndUpdate(req.user.id, { token: null });
+    res.status(204).end();
   } catch (e) {
     next(e);
   }
 };
-export const userCurrent = async (req, res, next) => {
+export const userEdit = async (req, res, next) => {
+  const { id } = req.user;
+
+  const data = {
+    userName: req.body.userName,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
   try {
-  } catch (e) {
-    next(e);
-  }
-};
-export const userAvatar = async (req, res, next) => {
-  try {
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+
+    const userData = editUserSchema.validate(data);
+    if (userData.error) {
+      return res.status(400).json(userData.error.message);
+    }
+
+    const user = await User.findByIdAndUpdate(id, userData.value, {
+      new: true,
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(201).json({
+      user: {
+        userName: user.userName,
+        email: user.email,
+        avatarURL: user.avatarURL,
+      },
+    });
   } catch (e) {
     next(e);
   }

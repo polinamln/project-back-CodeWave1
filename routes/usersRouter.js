@@ -3,9 +3,9 @@ import {
   userLogin,
   userRegistration,
   userLogout,
-  userCurrent,
-  userAvatar,
+  userEdit,
 } from "../controllers/usersControllers.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const usersRouter = express.Router();
 
@@ -13,12 +13,8 @@ usersRouter.post("/register", userRegistration);
 
 usersRouter.post("/login", userLogin);
 
-usersRouter.post("/logout", userLogout);
+usersRouter.post("/logout", authMiddleware, userLogout);
 
-usersRouter.get("/current", userCurrent);
-
-usersRouter.patch("/avatars", userAvatar);
-
-// usersRouter.get("/avatars/:fileName",  getAvatar);
+usersRouter.patch("/edit", authMiddleware, userEdit);
 
 export default usersRouter;
