@@ -133,3 +133,10 @@ export const userEdit = async (req, res, next) => {
     next(e);
   }
 };
+
+export const userCurrent = async (req, res, next) => {
+  try {
+  } catch (e) {
+    next(e);
+  }
+};
