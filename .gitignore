@@ -24,5 +24,8 @@ dist-ssr
 *.sw?
 .env
 
+tmp/*
+!tmp/.gitkeep
+
  #Pullrequests list
  pullrequests-list.txt
