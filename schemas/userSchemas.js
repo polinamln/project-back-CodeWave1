@@ -1,20 +1,20 @@
 import Joi from "joi";
 
 export const createUserSchema = Joi.object({
-  userName: Joi.string().required(),
-  email: Joi.required(),
-  password: Joi.required(),
-  avatarURL: Joi.optional(),
+  userName: Joi.string().max(20).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  avatarURL: Joi.string().optional(),
 });
 
 export const loginUserSchema = Joi.object({
-  email: Joi.required(),
-  password: Joi.required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
 });
 
 export const editUserSchema = Joi.object({
-  userName: Joi.string().optional(),
-  email: Joi.optional(),
-  password: Joi.optional(),
-  avatarURL: Joi.optional(),
+  userName: Joi.string().max(20).optional(),
+  email: Joi.string().email().optional(),
+  password: Joi.string().min(6).optional(),
+  avatarURL: Joi.string().optional(),
 });
