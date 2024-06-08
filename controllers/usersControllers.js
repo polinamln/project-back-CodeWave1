@@ -1,12 +1,17 @@
 import { createUserSchema } from "../schemas/userSchemas.js";
 import { loginUserSchema } from "../schemas/userSchemas.js";
 import { editUserSchema } from "../schemas/userSchemas.js";
-
-editUserSchema;
 import bcrypt from "bcrypt";
 import User from "../models/usersSchema.js";
 import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
+import cloudinary from "cloudinary";
+
+cloudinary.v2.config({
+  cloud_name: "dly7umchr",
+  api_key: "987983919887646",
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 export const userRegistration = async (req, res, next) => {
   const { email, password, userName } = req.body;
@@ -98,14 +103,27 @@ export const userLogout = async (req, res, next) => {
 };
 export const userEdit = async (req, res, next) => {
   const { id } = req.user;
-
-  const data = {
-    userName: req.body.userName,
-    email: req.body.email,
-    password: req.body.password,
-  };
+  const { path: imgPath, filename } = req.file;
 
   try {
+    // const avatar = await Jimp.read(imgPath);
+
+    let avatarURL;
+
+    if (imgPath) {
+      const uploadResult = await cloudinary.v2.uploader.upload(imgPath, {
+        public_id: filename.split(".")[0],
+      });
+      avatarURL = uploadResult.secure_url;
+    }
+
+    const data = {
+      userName: req.body.userName,
+      email: req.body.email,
+      password: req.body.password,
+      avatarURL,
+    };
+
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
@@ -114,20 +132,35 @@ export const userEdit = async (req, res, next) => {
     if (userData.error) {
       return res.status(400).json(userData.error.message);
     }
-
     const user = await User.findByIdAndUpdate(id, userData.value, {
       new: true,
     });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     return res.status(201).json({
-      user: {
-        userName: user.userName,
-        email: user.email,
-        avatarURL: user.avatarURL,
-      },
+      userName: user.userName,
+      email: user.email,
+      avatarURL: user.avatarURL,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const userCurrent = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized!" });
+    }
+
+    return res.status(200).json({
+      userName: user.userName,
+      email: user.email,
+      avatarURL: user.avatarURL,
     });
   } catch (e) {
     next(e);
