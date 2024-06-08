@@ -4,12 +4,13 @@ import "dotenv/config";
 import "./db/db.js";
 import boardRouter from "./routes/boardRouter.js";
 import usersRouter from "./routes/usersRouter.js";
+import cardRouter from "./routes/cardRouter.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/board", cardRouter);
 app.use("/board", boardRouter);
 app.use("/users", usersRouter);
 
