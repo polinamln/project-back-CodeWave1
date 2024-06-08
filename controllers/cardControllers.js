@@ -2,10 +2,8 @@ import Cards from "../models/cardSchema.js";
 
 export const addCard = async (req, res, next) => {
   try {
-    console.log(req);
-    //  const newCard = new Cards({ ...req.body, column: req.params.columnId});
-    //  await n
-    res.status(201).send("Sucses");
+    const { _id } = req.params;
+    res.status(201).send(_id);
   } catch (error) {
     next(error);
   }
