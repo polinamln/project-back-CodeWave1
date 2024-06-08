@@ -1,5 +1,5 @@
 import Joi from "joi";
 
-export const columSchema = Joi.object({
+export const columnSchema = Joi.object({
     title: Joi.string().required()
 })
