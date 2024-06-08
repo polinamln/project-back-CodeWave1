@@ -5,14 +5,17 @@ import "./db/db.js";
 import boardRouter from "./routes/boardRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import cardRouter from "./routes/cardRouter.js";
+import columnsRouter from "./routes/columnsRouter.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/board", cardRouter);
-app.use("/board", boardRouter);
+
+app.use("/api/boards", boardRouter);
 app.use("/users", usersRouter);
+app.use("/api/columns", columnsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
