@@ -11,7 +11,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/board", cardRouter);
 
 app.use("/api/cards", cardRouter);
 app.use("/api/boards", boardRouter);
