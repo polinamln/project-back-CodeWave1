@@ -12,7 +12,7 @@ const cardRouter = express.Router();
 
 cardRouter.use(auth);
 cardRouter.post("/", validateBody(cardSchema), addCard);
-cardRouter.put("/cards/:cardId", validateBody(cardSchema), updateCard);
-cardRouter.delete("/cards/:cardId", deleteCard);
+cardRouter.put("/:cardId", validateBody(cardSchema), updateCard);
+cardRouter.delete("/:cardId", deleteCard);
 
 export default cardRouter;

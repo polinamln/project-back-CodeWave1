@@ -18,10 +18,15 @@ const cardSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    board: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Board",
+      required: true,
+    },
     column: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Column",
-      // required: true,
+      required: true,
     },
   },
 
