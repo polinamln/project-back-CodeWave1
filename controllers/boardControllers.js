@@ -1,7 +1,6 @@
-import { boardSchema } from "../schemas/boardSchema.js";
 import Board from "../models/boardSchema.js";
 import Column from "../models/columnsSchema.js";
-// import Card from "../models/cardSchema.js";
+import Card from "../models/cardSchema.js";
 import HttpError from "../helpers/HttpError.js";
 
 
@@ -15,10 +14,10 @@ export const getAllBoard = async (req, res, next) => {
 }
 
 export const getBoard = async (req, res, next) => {
-    const { id } = req.params;
-    if(!id) throw HttpError(404);
+    const { boardId } = req.params;
+    if(!boardId) throw HttpError(404);
     try {
-        const board = await Board.findOne({_id: id, owner: req.user.id});
+        const board = await Board.findOne({_id: boardId, owner: req.user.id});
         if(!board) throw HttpError(404);
             res.json({ board });
     } catch (e) {
@@ -34,8 +33,6 @@ export const createBoard = async (req, res, next) => {
         owner: req.user.id
     }
     try {
-      const boardValidate = boardSchema.validate(createBoard);
-      if (!boardValidate) throw HttpError(400);
       const newBoard = await Board.create(createBoard);
       res.status(201).json({ board: newBoard });
     } catch (e) {
@@ -44,12 +41,12 @@ export const createBoard = async (req, res, next) => {
 }
 
 export const deleteBoard = async (req, res, next) => {
-    const { id } = req.params;
+    const { boardId } = req.params;
     try {
         const deleteBoard = await Board.findByIdAndDelete(id);
-         await Column.deleteMany({ board: id});
-        //  await Card.deleteMany({ board: id})
         if(deleteBoard === null) throw HttpError(404);
+        await Column.deleteMany({ board: boardId});
+         await Card.deleteMany({ board: boardId})
          res.json({ message: "Board deleted successfully" });   
     } catch (e) {
         next(e)
@@ -57,13 +54,11 @@ export const deleteBoard = async (req, res, next) => {
 }
 
 export const updateBoard = async (req, res, next) => {
-    const { id } = req.params;
+    const { boardId } = req.params;
     const newBoard = req.body;
     try {
-        const boardValidate = boardSchema.validate(newBoard);
-        if(!boardValidate) throw HttpError(400);
             const updateBoard = await Board.findByIdAndUpdate(
-        id,
+        boardId,
         newBoard,
         {new: true}
         )
