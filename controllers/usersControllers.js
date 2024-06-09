@@ -83,8 +83,16 @@ export const userLogin = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" }
+    );
+
+    await User.findByIdAndUpdate(user._id, { token }, { new: true });
+
     return res.status(200).json({
-      token: user.token,
+      token: token,
       user: {
         userName: user.userName,
         email: user.email,
@@ -95,6 +103,7 @@ export const userLogin = async (req, res, next) => {
     next(e);
   }
 };
+
 export const userLogout = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.user.id, { token: null });
@@ -103,13 +112,12 @@ export const userLogout = async (req, res, next) => {
     next(e);
   }
 };
+
 export const userEdit = async (req, res, next) => {
   const { id } = req.user;
   const { path: imgPath, filename } = req.file;
 
   try {
-    // const avatar = await Jimp.read(imgPath);
-
     let avatarURL;
 
     if (imgPath) {
