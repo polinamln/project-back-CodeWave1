@@ -40,7 +40,16 @@ export const userRegistration = async (req, res, next) => {
 
     const registerUser = await User.create(userData.value);
 
+    const token = jwt.sign(
+      { id: registerUser._id, email: registerUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" }
+    );
+
+    await User.findByIdAndUpdate(registerUser._id, { token }, { new: true });
+
     return res.status(201).json({
+      token: token,
       user: {
         userName: registerUser.userName,
         email: registerUser.email,
@@ -74,19 +83,12 @@ export const userLogin = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "3d" }
-    );
-
-    await User.findByIdAndUpdate(user._id, { token }, { new: true });
-
     return res.status(200).json({
-      token: token,
+      token: user.token,
       user: {
         userName: user.userName,
         email: user.email,
+        avatarURL: user.avatarURL,
       },
     });
   } catch (e) {
