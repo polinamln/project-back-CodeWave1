@@ -6,18 +6,19 @@ const boardSchema = new mongoose.Schema ({
         required: [true, "Set title for board"],
     },
     icon: {
-        type: Number,
-        default: 0,
-        required: [true, "Set number for icon"]
+        type: String,
+        default: "Cube",
+        required: [true, "Set icon for board"]
     },
     background: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "background",
+        default: "None",
         required: [true, "Set background for board"]
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users", 
+        ref: "User", 
     }
     }, {
         versionKey: false

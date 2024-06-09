@@ -8,16 +8,17 @@ import {
     updateBoard
  } from "../controllers/boardControllers.js";
 import auth from "../middlewares/authMiddleware.js";
-
+import { boardSchema } from "../schemas/boardSchema.js";
+import validateBody from "../helpers/validateBody.js";
 
 const boardRouter = express.Router();
 
 boardRouter.use(auth)
 boardRouter.get("/", getAllBoard)
-boardRouter.get("/:id", getBoard)
-boardRouter.post("/", createBoard)
-boardRouter.delete("/:id", deleteBoard)
-boardRouter.put("/:id", updateBoard)
+boardRouter.get("/:boardId", getBoard)
+boardRouter.post("/", validateBody(boardSchema), createBoard)
+boardRouter.delete("/:boardId", deleteBoard)
+boardRouter.put("/:boardId", validateBody(boardSchema), updateBoard)
 
 
 export default boardRouter;
