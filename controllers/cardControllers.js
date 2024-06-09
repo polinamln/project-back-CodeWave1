@@ -1,44 +1,36 @@
+import ctrlWrapper from "../helpers/ctrlWrapper.js";
 import Cards from "../models/cardSchema.js";
 
-export const addCard = async (req, res, next) => {
+export const addCard = ctrlWrapper(async (req, res) => {
+  const { title, description, priority, deadline, columnId } = req.body;
   const card = {
-    title: req.body.title,
-    description: req.body.description,
-    priority: req.body.priority,
-    deadline: req.body.deadline,
+    title: title,
+    description: description,
+    priority: priority,
+    deadline: deadline,
+    owner: req.user.id,
+    column: columnId,
   };
-  try {
-    const result = await Cards.create(card);
 
-    res.status(201).send(result);
-  } catch (error) {
-    next(error);
-  }
-};
+  console.log(columnId);
 
-export const updateCard = async (req, res, next) => {
-  const card = {
-    title: req.body.title,
-    description: req.body.description,
-    priority: req.body.priority,
-    deadline: req.body.deadline,
-  };
-  try {
-    const result = await Cards.findByIdAndUpdate(_id, card, { new: true });
+  const result = await Cards.create(card);
 
-    res.send(result);
-  } catch (error) {
-    next(error);
-  }
-};
+  res.status(201).json(result);
+});
 
-export const deleteCard = async (req, res, next) => {
-  const { _id } = req.params;
+export const updateCard = ctrlWrapper(async (req, res) => {
+  const { id } = req.params;
+  const newCard = req.body;
 
-  try {
-    const result = Cards.findByIdAndDelete(_id);
-    res.send("Delete card");
-  } catch (error) {
-    next(error);
-  }
-};
+  const result = await Cards.findByIdAndUpdate(id, newCard, { new: true });
+
+  res.send(result);
+});
+
+export const deleteCard = ctrlWrapper(async (req, res) => {
+  const { id } = req.params;
+
+  const result = Cards.findByIdAndDelete(id);
+  res.send({ message: "Card deleted successfully" });
+});

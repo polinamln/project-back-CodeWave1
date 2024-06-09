@@ -14,12 +14,17 @@ const cardSchema = new mongoose.Schema(
       default: "Low",
     },
     deadline: { type: Date },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     column: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      required: true,
+      ref: "Column",
+      // required: true,
     },
   },
+
   { versionKey: false, timestamps: true }
 );
 export default mongoose.model("Card", cardSchema);

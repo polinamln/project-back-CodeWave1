@@ -4,12 +4,15 @@ import {
   updateCard,
   deleteCard,
 } from "../controllers/cardControllers.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
+import auth from "../middlewares/authMiddleware.js";
+import { cardSchema } from "../schemas/cardSchema.js";
+import validateBody from "../helpers/validateBody.js";
 
 const cardRouter = express.Router();
 
-cardRouter.post("/:columnId/cards", authMiddleware, addCard);
-cardRouter.put("/cards/:cardId", updateCard);
+cardRouter.use(auth);
+cardRouter.post("/", validateBody(cardSchema), addCard);
+cardRouter.put("/cards/:cardId", validateBody(cardSchema), updateCard);
 cardRouter.delete("/cards/:cardId", deleteCard);
 
 export default cardRouter;
