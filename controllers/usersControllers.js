@@ -40,7 +40,16 @@ export const userRegistration = async (req, res, next) => {
 
     const registerUser = await User.create(userData.value);
 
+    const token = jwt.sign(
+      { id: registerUser._id, email: registerUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" }
+    );
+
+    await User.findByIdAndUpdate(registerUser._id, { token }, { new: true });
+
     return res.status(201).json({
+      token: token,
       user: {
         userName: registerUser.userName,
         email: registerUser.email,
@@ -87,12 +96,14 @@ export const userLogin = async (req, res, next) => {
       user: {
         userName: user.userName,
         email: user.email,
+        avatarURL: user.avatarURL,
       },
     });
   } catch (e) {
     next(e);
   }
 };
+
 export const userLogout = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.user.id, { token: null });
@@ -101,13 +112,12 @@ export const userLogout = async (req, res, next) => {
     next(e);
   }
 };
+
 export const userEdit = async (req, res, next) => {
   const { id } = req.user;
   const { path: imgPath, filename } = req.file;
 
   try {
-    // const avatar = await Jimp.read(imgPath);
-
     let avatarURL;
 
     if (imgPath) {
