@@ -43,7 +43,7 @@ export const createBoard = async (req, res, next) => {
 export const deleteBoard = async (req, res, next) => {
     const { boardId } = req.params;
     try {
-        const deleteBoard = await Board.findByIdAndDelete(id);
+        const deleteBoard = await Board.findByIdAndDelete(boardId);
         if(deleteBoard === null) throw HttpError(404);
         await Column.deleteMany({ board: boardId});
          await Card.deleteMany({ board: boardId})
