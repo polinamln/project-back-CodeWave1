@@ -115,7 +115,11 @@ export const userLogout = async (req, res, next) => {
 
 export const userEdit = async (req, res, next) => {
   const { id } = req.user;
-  const { path: imgPath, filename } = req.file;
+  let imgPath, filename;
+  if (req.file) {
+    imgPath = req.file.path;
+    filename = req.file.filename;
+  }
 
   try {
     let avatarURL;
