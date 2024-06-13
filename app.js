@@ -6,6 +6,7 @@ import boardRouter from "./routes/boardRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import cardRouter from "./routes/cardRouter.js";
 import columnsRouter from "./routes/columnsRouter.js";
+import emailSupportRouter from "./emailSupport/emailRouter.js";
 
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "./swagger.json" assert { type: "json" };
@@ -19,6 +20,7 @@ app.use("/users", usersRouter);
 app.use("/api/cards", cardRouter);
 app.use("/api/boards", boardRouter);
 app.use("/api/columns", columnsRouter);
+app.use("/api/help", emailSupportRouter);
 
 // ~ swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
