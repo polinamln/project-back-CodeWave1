@@ -8,6 +8,7 @@ import {
 } from "../controllers/usersControllers.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import imgUploadMiddleware from "../middlewares/imgUploadMiddleware.js";
+import { themasCurrent } from "../controllers/themasControllers.js";
 
 const usersRouter = express.Router();
 
@@ -23,6 +24,8 @@ usersRouter.patch(
   imgUploadMiddleware.single("avatar"),
   userEdit
 );
+
+usersRouter.patch ("/thema", authMiddleware, themasCurrent);
 
 usersRouter.get("/current", authMiddleware, userCurrent);
 
