@@ -207,6 +207,46 @@
                 ]
             }
         },
+        "users/thema": {
+            "patch": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Edit user thema",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "thema": {
+                                        "type": "string",
+                                        "enum": ["dark", "light", "violet"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User updated thema"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/boards": {
             "get": {
                 "tags": [
