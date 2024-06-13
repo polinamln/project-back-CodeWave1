@@ -54,6 +54,7 @@ export const userRegistration = async (req, res, next) => {
         userName: registerUser.userName,
         email: registerUser.email,
         avatarURL: registerUser.avatarURL,
+        thema: registerUser.thema,
       },
     });
   } catch (e) {
@@ -97,6 +98,7 @@ export const userLogin = async (req, res, next) => {
         userName: user.userName,
         email: user.email,
         avatarURL: user.avatarURL,
+        thema: user.thema,
       },
     });
   } catch (e) {
