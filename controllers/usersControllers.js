@@ -43,7 +43,7 @@ export const userRegistration = async (req, res, next) => {
     const token = jwt.sign(
       { id: registerUser._id, email: registerUser.email },
       process.env.JWT_SECRET,
-      { expiresIn: "3d" }
+      { expiresIn: "10d" }
     );
 
     await User.findByIdAndUpdate(registerUser._id, { token }, { new: true });
@@ -54,6 +54,7 @@ export const userRegistration = async (req, res, next) => {
         userName: registerUser.userName,
         email: registerUser.email,
         avatarURL: registerUser.avatarURL,
+        thema: registerUser.thema,
       },
     });
   } catch (e) {
@@ -86,7 +87,7 @@ export const userLogin = async (req, res, next) => {
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "3d" }
+      { expiresIn: "10d" }
     );
 
     await User.findByIdAndUpdate(user._id, { token }, { new: true });
@@ -97,6 +98,7 @@ export const userLogin = async (req, res, next) => {
         userName: user.userName,
         email: user.email,
         avatarURL: user.avatarURL,
+        thema: user.thema,
       },
     });
   } catch (e) {
@@ -115,7 +117,11 @@ export const userLogout = async (req, res, next) => {
 
 export const userEdit = async (req, res, next) => {
   const { id } = req.user;
-  const { path: imgPath, filename } = req.file;
+  let imgPath, filename;
+  if (req.file) {
+    imgPath = req.file.path;
+    filename = req.file.filename;
+  }
 
   try {
     let avatarURL;

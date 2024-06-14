@@ -15,7 +15,7 @@ owner: {
     ref: "User",
 }
 }, {
-    versionKey: false
+    versionKey: false, timestamps: true
 });
 
 export default mongoose.model("Column", columnSchema);

@@ -18,3 +18,8 @@ export const editUserSchema = Joi.object({
   password: Joi.string().min(6).optional(),
   avatarURL: Joi.string().optional(),
 });
+
+
+export const themasUserScema = Joi.object({
+  thema: Joi.string().valid("dark", "light", "violet"),
+})
