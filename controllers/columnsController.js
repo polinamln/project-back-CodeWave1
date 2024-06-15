@@ -6,7 +6,7 @@ import  HttpError  from "../helpers/HttpError.js";
 export const getAllColumns = async (req, res, next) => {
 try {
     const columns = await Column.find({owner: req.user.id, board: req.body.boardId})
-    res.send( columns );
+    res.json({ columns });
 } catch (e) {
     next(e)
 }
