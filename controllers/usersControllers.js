@@ -160,6 +160,7 @@ export const userEdit = async (req, res, next) => {
       userName: user.userName,
       email: user.email,
       avatarURL: user.avatarURL,
+      thema: user.thema,
     });
   } catch (e) {
     next(e);
@@ -177,6 +178,7 @@ export const userCurrent = async (req, res, next) => {
       userName: user.userName,
       email: user.email,
       avatarURL: user.avatarURL,
+      thema: user.thema,
     });
   } catch (e) {
     next(e);
