@@ -4,8 +4,9 @@ import Column from "../models/columnsSchema.js";
 import  HttpError  from "../helpers/HttpError.js";
 
 export const getAllColumns = async (req, res, next) => {
+     const boardId = req.query.boardId;
 try {
-    const columns = await Column.find({owner: req.user.id, board: req.body.boardId})
+    const columns = await Column.find({owner: req.user.id, board: boardId})
     res.json({ columns });
 } catch (e) {
     next(e)
