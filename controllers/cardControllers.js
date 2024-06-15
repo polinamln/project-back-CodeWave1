@@ -3,6 +3,15 @@ import ctrlWrapper from "../helpers/ctrlWrapper.js";
 import Cards from "../models/cardSchema.js";
 import Column from "../models/columnsSchema.js";
 
+export const getAllCards = ctrlWrapper(async (req, res) => {
+  const { columnId } = req.body;
+
+  const cards = await Cards.find({ column: columnId });
+
+  if (!cards.length) throw HttpError(404, "Cards not found");
+  res.send({ cards });
+});
+
 export const addCard = ctrlWrapper(async (req, res) => {
   const { title, description, priority, deadline, columnId, board } = req.body;
   const card = {
