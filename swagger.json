@@ -580,6 +580,17 @@
                     "Columns"
                 ],
                 "summary": "Get all columns",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "description": "Query board Id",
+                        "name": "boardId",
+                        "schema": {
+                            "example": "Put your board ID here"
+                        },
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Columns retrieved successfully",
@@ -1010,6 +1021,17 @@
                     "Cards"
                 ],
                 "summary": "Get all cards",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "description": "Query column Id",
+                        "name": "columnId",
+                        "schema": {
+                            "example": "Put your board ID here"
+                        },
+                        "required": true
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
