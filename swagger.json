@@ -1041,21 +1041,6 @@
                         "required": true
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "columnId": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Cards retrieved successfully",
