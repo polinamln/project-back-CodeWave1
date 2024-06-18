@@ -1027,6 +1027,15 @@
                         "description": "Query column Id",
                         "name": "columnId",
                         "schema": {
+                            "example": "Put your column ID here"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "description": "Query board Id",
+                        "name": "boardId",
+                        "schema": {
                             "example": "Put your board ID here"
                         },
                         "required": true
