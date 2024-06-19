@@ -4,8 +4,7 @@ import Cards from "../models/cardSchema.js";
 import Column from "../models/columnsSchema.js";
 
 export const getAllCards = ctrlWrapper(async (req, res) => {
-  const { columnId } = req.query;
-  const { boardId } = req.query;
+  const { columnId, boardId } = req.query;
 
   const cards = await Cards.find({ column: columnId, board: boardId });
 
