@@ -1030,15 +1030,6 @@
                             "example": "Put your column ID here"
                         },
                         "required": true
-                    },
-                    {
-                        "in": "query",
-                        "description": "Query board Id",
-                        "name": "boardId",
-                        "schema": {
-                            "example": "Put your board ID here"
-                        },
-                        "required": true
                     }
                 ],
                 "responses": {
