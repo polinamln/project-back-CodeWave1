@@ -4,9 +4,9 @@ import Cards from "../models/cardSchema.js";
 import Column from "../models/columnsSchema.js";
 
 export const getAllCards = ctrlWrapper(async (req, res) => {
-  const { columnId, boardId } = req.query;
+  const { columnId } = req.query;
 
-  const cards = await Cards.find({ column: columnId, board: boardId });
+  const cards = await Cards.find({ column: columnId });
 
   if (!cards.length) throw HttpError(404, "Cards not found");
   res.send({ cards });
